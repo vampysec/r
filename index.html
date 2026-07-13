@@ -3,55 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VampySec - Music</title>
+  <title>VampySec Music</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      background: #121212;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a0033);
       color: #fff;
-      text-align: center;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
     }
-    h1 { margin: 20px 0; }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 0 0 15px #bb00ff;
+    }
     #player {
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 15px;
+      background: rgba(30, 30, 40, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(187, 0, 255, 0.2);
     }
     audio {
       width: 100%;
       margin: 20px 0;
     }
-    #playlist {
-      text-align: left;
-      max-height: 400px;
-      overflow-y: auto;
-      margin-top: 20px;
-    }
-    .song {
-      padding: 10px;
-      cursor: pointer;
-      border-bottom: 1px solid #333;
-    }
-    .song:hover, .song.playing {
-      background: #333;
-    }
     .controls {
+      text-align: center;
       margin: 15px 0;
     }
     button {
-      padding: 10px 15px;
+      padding: 12px 18px;
       margin: 5px;
       background: #bb00ff;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 50px;
+      font-size: 1.1em;
       cursor: pointer;
+      transition: all 0.3s;
     }
-    button:hover { background: #dd33ff; }
+    button:hover {
+      background: #dd33ff;
+      transform: scale(1.05);
+    }
+    #playlist {
+      margin-top: 25px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .song {
+      padding: 14px 18px;
+      margin: 6px 0;
+      background: #252532;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .song:hover {
+      background: #bb00ff;
+      transform: translateX(8px);
+    }
+    .song.playing {
+      background: #bb00ff;
+      font-weight: 600;
+    }
+    .song-title {
+      font-size: 1.05em;
+    }
   </style>
 </head>
 <body>
@@ -74,33 +98,30 @@
   <script>
     const audio = document.getElementById('audio');
     const playlistDiv = document.getElementById('playlist');
-    
-    let songs = [];
+
+    // ================== AQUÍ AGREGAS TUS CANCIONES ==================
+    let songs = [
+      "SOY REAL (En Vivo) Dj Jader Tremendo x Twiste....mp3",
+      "Soy Real.mp3",
+      "TWO WICKED LEVELS - EL SEIS (2020).mp3",
+      "Tajin (HTX Sauce).mp3",
+      "Tu Cumpleaños (HTX Sauce).mp3",
+      "Y esta copa la levanto y saludita por todos los e....mp3"
+      // Agrega aquí las nuevas canciones manteniendo el formato:
+      // "Nombre exacto de la canción.mp3",
+    ];
+    // ==============================================================
+
     let currentIndex = 0;
     let isShuffle = false;
     let isRepeat = false;
-
-    // Cargar todas las canciones automáticamente (archivos mp3, wav, ogg, etc.)
-    async function loadSongs() {
-      // Lista manual de canciones (debes poner aquí los nombres exactos)
-      songs = [
-        // Ejemplo:
-        // "cancion1.mp3",
-        // "cancion2.mp3"
-      ];
-
-      // Si quieres que intente detectar archivos (funciona solo en algunos servidores, GitHub Pages no lo permite bien)
-      // Por eso te recomiendo listarlas manualmente.
-
-      renderPlaylist();
-    }
 
     function renderPlaylist() {
       playlistDiv.innerHTML = '';
       songs.forEach((song, index) => {
         const div = document.createElement('div');
         div.className = 'song';
-        div.textContent = song;
+        div.innerHTML = `<span class="song-title">${song}</span>`;
         div.onclick = () => playSong(index);
         playlistDiv.appendChild(div);
       });
@@ -130,7 +151,7 @@
 
     function toggleShuffle() {
       isShuffle = !isShuffle;
-      alert(isShuffle ? "🔀 Modo Aleatorio Activado" : "🔀 Modo Aleatorio Desactivado");
+      alert(isShuffle ? "🔀 Aleatorio Activado" : "🔀 Aleatorio Desactivado");
     }
 
     function toggleRepeat() {
@@ -145,13 +166,15 @@
       });
     }
 
-    // Siguiente canción al terminar
     audio.addEventListener('ended', () => {
       if (!isRepeat) next();
     });
 
-    // Cargar canciones al iniciar
-    window.onload = loadSongs;
+    // Iniciar
+    window.onload = () => {
+      renderPlaylist();
+      if (songs.length > 0) playSong(0); // Reproduce la primera automáticamente
+    };
   </script>
 </body>
 </html>
